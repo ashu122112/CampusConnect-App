@@ -1,7 +1,12 @@
+import Navbar from '@/components/Navbar'
 import React from 'react'
 
 function page() {
   return (
+	<>
+	<div>
+		<Navbar/>
+	</div>
 <div className="min-h-screen bg-gray-200 py-6 flex flex-col justify-center sm:py-12">
 	<div className="relative py-3 sm:max-w-xl sm:mx-auto">
 		<div
@@ -31,6 +36,7 @@ function page() {
 		</div>
 	</div>
 </div>
+</>
   )
 }
 
