@@ -1,3 +1,5 @@
+// const { URL } = require('next/dist/compiled/@edge-runtime/primitives/url');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
