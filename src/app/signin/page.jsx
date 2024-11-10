@@ -21,9 +21,9 @@ function Page() {
 			// Show success message
 			setSuccessMessage(true);
 			
-			// Redirect to messages page after a short delay
+			// Redirect to profile page after a short delay
 			setTimeout(() => {
-				router.push('/messages');
+				router.push('/profile'); // Redirect to profile page
 			}, 2000);
 		} catch (error) {
 			console.error("Login error:", error);
@@ -97,7 +97,7 @@ function Page() {
 									{/* Success Message Popup */}
 									{successMessage && (
 										<div className="mt-4 p-4 text-green-600 border border-green-400 rounded">
-											Login successful! Redirecting to messages...
+											Login successful! Redirecting to profile page...
 										</div>
 									)}
 								</div>
