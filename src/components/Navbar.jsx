@@ -1,11 +1,17 @@
 "use client"
-import React from 'react';
-import  { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const Navbar = () => {
-  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState(null); // User state to manage login status
+
+  // Simulate user login status (use actual authentication logic in a real app)
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('user')); // Example way to check login
+    if (loggedInUser) setUser(loggedInUser);
+  }, []);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
@@ -31,15 +37,20 @@ const Navbar = () => {
       </nav>
 
       {/* Desktop Links */}
-      <div className="hidden md:flex">
-        <ul className="flex gap-4 items-center">
-          <li>
+      <div className="hidden md:flex items-center gap-4">
+        {!user ? (
+          <>
             <Link href="/signin" className="p-2 border-b-2 border-blue-500 border-opacity-0 hover:border-opacity-100 hover:text-blue-500">Login</Link>
-          </li>
-          <li>
             <Link href="/signup" className="p-2 border-b-2 border-blue-500 border-opacity-0 hover:border-opacity-100 hover:text-blue-500">Register</Link>
-          </li>
-        </ul>
+          </>
+        ) : (
+          <div className="flex items-center gap-3">
+            {/* Profile section */}
+            <Link href="/profile" className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
+              <Image src={user.profileImage || "/default-profile.png"} alt="Profile" width={40} height={40} />
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* Mobile Menu Button */}
@@ -56,18 +67,16 @@ const Navbar = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-blue-100 shadow-md">
           <ul className="flex flex-col items-center gap-4 p-4">
-            <li>
-              <Link href="/" className="block p-2">Home</Link>
-            </li>
-            <li>
-              <Link href="/announcement" className="block p-2">Announcement</Link>
-            </li>
-            <li>
-              <Link href="/signin" className="block p-2">Login</Link>
-            </li>
-            <li>
-              <Link href="/signup" className="block p-2">Register</Link>
-            </li>
+            <li><Link href="/" className="block p-2">Home</Link></li>
+            <li><Link href="/announcement" className="block p-2">Announcement</Link></li>
+            {!user ? (
+              <>
+                <li><Link href="/signin" className="block p-2">Login</Link></li>
+                <li><Link href="/signup" className="block p-2">Register</Link></li>
+              </>
+            ) : (
+              <li><Link href="/profile" className="block p-2">Profile</Link></li>
+            )}
           </ul>
         </div>
       )}

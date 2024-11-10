@@ -1,14 +1,17 @@
-"use client";
+"use client"
 import Navbar from '@/components/Navbar';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
 
 function CheckboxComponent() {
+  const router = useRouter();
   const [selectedRole, setSelectedRole] = useState(null);
   const [selectedYear, setSelectedYear] = useState("second year");
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(false);  // For success popup
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -39,14 +42,20 @@ function CheckboxComponent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Replace with your Spring Boot API endpoint
-      const response = await axios.post('http://192.168.180.142:8080/api/signup', {
+      const response = await axios.post('http://localhost:8080/api/signup', {
         ...formData,
         role: selectedRole,
         year: selectedYear
       });
+      
       console.log("Form submitted successfully:", response.data);
-      // Optionally reset the form here
+      setSuccessMessage(true); // Show success message
+
+      // Delay the redirect for 2 seconds to show the success popup
+      setTimeout(() => {
+        router.push('/signin'); // Redirect to sign-in page
+      }, 2000);
+      
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -59,7 +68,8 @@ function CheckboxComponent() {
           <Navbar />
         </div>
       </div>
-      <div className="min-h-screen bg-gray-200 py-6 flex flex-col justify-center sm:py-12 px-4 sm:px-0">
+      
+      <div className="min-h-screen  from-cyan-100 via-pink-200 to-yellow-200 bg-gradient-to-br py-6 flex flex-col justify-center sm:py-12 px-4 sm:px-0">
         <div className="relative py-3 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
 
@@ -230,6 +240,13 @@ function CheckboxComponent() {
                       Submit
                     </button>
                   </div>
+
+                  {/* Success Message Popup */}
+                  {successMessage && (
+                    <div className="mt-4 p-4 text-green-600 border border-green-400 rounded">
+                      Registration successful! Redirecting to sign-in...
+                    </div>
+                  )}
 
                 </div>
               </div>
